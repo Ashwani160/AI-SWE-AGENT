@@ -7,3 +7,4 @@ qdrant_data/
 test_clone.py
 test_embeddings.py
 test_qdrant.py
+repositories/
