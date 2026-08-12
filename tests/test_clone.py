@@ -1,21 +1,9 @@
-from ingestion.loader import load_files
-from ingestion.file_filter import filter_files
-from ingestion.documents import create_documents
-from ingestion.chunker import split_documents
+from ingestion.cloner import clone_repository
 
-repo_path = "repositories/requests"
 
-files = load_files(repo_path)
-files = filter_files(files)
+repo_url = "https://github.com/psf/requests.git"
+destination = "repositories/requests"
 
-documents = create_documents(files)
-chunks = split_documents(documents)
+clone_repository(repo_url, destination)
 
-print(f"Files: {len(documents)}")
-print(f"Chunks: {len(chunks)}")
-
-for chunk in chunks[:3]:
-    print("\n--- Chunk ---")
-    print("Metadata:", chunk.metadata)
-    print("Content:")
-    print(chunk.page_content[:500])
+print("Repository cloned successfully!")
