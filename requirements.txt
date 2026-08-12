@@ -1,2 +1,8 @@
 fastapi
 uvicorn
+GitPython
+langchain-core
+langchain-text-splitters
+langchain-openai
+python-dotenv
+qdrant-client
