@@ -23,8 +23,15 @@ vector_size = len(
     embeddings.embed_query("test")
 )
 
-create_collection(vector_size)
+create_collection(
+    vector_size,
+    collection_name="code_chunks_lang",
+)
 
-add_documents(chunks, embeddings)
+add_documents(
+    chunks,
+    embeddings,
+    collection_name="code_chunks_lang",
+)
 
 print(f"Inserted {len(chunks)} chunks into Qdrant")

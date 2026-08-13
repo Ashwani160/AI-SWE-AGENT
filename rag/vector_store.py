@@ -12,15 +12,18 @@ from uuid import uuid4
 
 client = QdrantClient(path="./qdrant_data")
 
-COLLECTION_NAME = "code_chunks"
+DEFAULT_COLLECTION = "code_chunks_lang"
 
 
-def create_collection(vector_size: int):
+def create_collection(
+    vector_size: int,
+    collection_name: str = DEFAULT_COLLECTION,
+):
     collections = client.get_collections().collections
 
-    if COLLECTION_NAME not in [c.name for c in collections]:
+    if collection_name not in [c.name for c in collections]:
         client.create_collection(
-            collection_name=COLLECTION_NAME,
+            collection_name=collection_name,
             vectors_config=VectorParams(
                 size=vector_size,
                 distance=Distance.COSINE,
@@ -28,7 +31,11 @@ def create_collection(vector_size: int):
         )
 
 
-def add_documents(documents, embeddings):
+def add_documents(
+    documents,
+    embeddings,
+    collection_name: str = DEFAULT_COLLECTION,
+):
     vectors = embeddings.embed_documents(
         [doc.page_content for doc in documents]
     )
@@ -48,7 +55,7 @@ def add_documents(documents, embeddings):
         )
 
     client.upsert(
-        collection_name=COLLECTION_NAME,
+        collection_name=collection_name,
         points=points,
     )
     
@@ -58,6 +65,7 @@ def search_documents(
     limit: int = 5,
     repository: str | None = None,
     score_threshold: float | None = None,
+    collection_name: str = DEFAULT_COLLECTION,
 ):
     query_vector = embeddings.embed_query(query)
 
@@ -74,7 +82,7 @@ def search_documents(
         )
 
     results = client.query_points(
-        collection_name=COLLECTION_NAME,
+        collection_name=collection_name,
         query=query_vector,
         query_filter=query_filter,
         limit=limit,
