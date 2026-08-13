@@ -1,5 +1,12 @@
 from qdrant_client import QdrantClient
-from qdrant_client.models import Distance, VectorParams, PointStruct
+from qdrant_client.models import (
+    Distance,
+    VectorParams,
+    PointStruct,
+    Filter,
+    FieldCondition,
+    MatchValue,
+)
 from uuid import uuid4
 
 
@@ -45,13 +52,33 @@ def add_documents(documents, embeddings):
         points=points,
     )
     
-def search_documents(query: str, embeddings, limit: int = 5):
+def search_documents(
+    query: str,
+    embeddings,
+    limit: int = 5,
+    repository: str | None = None,
+    score_threshold: float | None = None,
+):
     query_vector = embeddings.embed_query(query)
+
+    query_filter = None
+
+    if repository:
+        query_filter = Filter(
+            must=[
+                FieldCondition(
+                    key="repository",
+                    match=MatchValue(value=repository),
+                )
+            ]
+        )
 
     results = client.query_points(
         collection_name=COLLECTION_NAME,
         query=query_vector,
+        query_filter=query_filter,
         limit=limit,
+        score_threshold=score_threshold,
     )
 
     return results.points

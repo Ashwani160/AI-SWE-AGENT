@@ -15,6 +15,7 @@ files = filter_files(files)
 documents = create_documents(
     files,
     repository="requests",
+    repo_path=repo_path,
 )
 chunks = split_documents(documents)
 
