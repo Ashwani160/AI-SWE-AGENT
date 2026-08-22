@@ -50,7 +50,13 @@ def answer_question(
     response = llm.invoke(messages)
 
     sources = [
-        result.payload["file_path"]
+        {
+            "file": result.payload["file_path"],
+            "score": result.score,
+            "start_line": result.payload.get("start_line"),
+            "end_line": result.payload.get("end_line"),
+            "node_type": result.payload.get("node_type"),
+        }
         for result in results
     ]
 

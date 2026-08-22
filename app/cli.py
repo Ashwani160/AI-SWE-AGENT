@@ -80,5 +80,26 @@ def run():
         print("\n" + answer)
 
         print("\nSources:")
-        for source in dict.fromkeys(sources):
-            print(f"- {source}")
+
+        seen = set()
+
+        for source in sources:
+            file_path = source["file"]
+
+            if file_path in seen:
+                continue
+
+            seen.add(file_path)
+
+            start_line = source["start_line"]
+            end_line = source["end_line"]
+
+            if start_line and end_line:
+                location = f"{file_path}#L{start_line}-L{end_line}"
+            else:
+                location = file_path
+
+            print(
+                f"- {location} "
+                f"(score: {source['score']:.3f})"
+            )
