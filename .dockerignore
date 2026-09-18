@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+.git/
+.github/
+
+repositories/
+qdrant_data/
+.qdrant/
+
+tests/
+evals/

@@ -6,8 +6,5 @@ langchain-text-splitters
 langchain-openai
 python-dotenv
 qdrant-client
-ragas
-langchain-community
 tree-sitter
-tree-sitter-languages
 tree-sitter-language-pack

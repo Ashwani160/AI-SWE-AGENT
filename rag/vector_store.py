@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv
 from qdrant_client import QdrantClient
 from qdrant_client.models import (
     Distance,
@@ -9,8 +11,15 @@ from qdrant_client.models import (
 )
 from uuid import uuid4
 
+load_dotenv()
 
-client = QdrantClient(path="./qdrant_data")
+QDRANT_URL = os.getenv("QDRANT_URL")
+
+if QDRANT_URL:
+    client = QdrantClient(url=QDRANT_URL)
+else:
+    client = QdrantClient(path="./qdrant_data")
+
 
 DEFAULT_COLLECTION = "code_chunks_lang"
 

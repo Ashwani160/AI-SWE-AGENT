@@ -1,0 +1,22 @@
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      QDRANT_URL: http://qdrant:6333
+    env_file:
+      - .env
+    volumes:
+      - repositories_data:/app/repositories
+    depends_on:
+      - qdrant
+
+volumes:
+  qdrant_data:
+  repositories_data:
