@@ -1,13 +1,21 @@
 from fastapi import FastAPI
 
-app = FastAPI()
+from backend.api.routes.chat import router as chat_router
+from backend.api.routes.repositories import router as repositories_router
 
 
-@app.get("/")
-def root():
-    return {"message": "AI Software Engineering Assistant"}
+app = FastAPI(
+    title="RepoRAG API",
+    description="AI software engineering assistant",
+    version="0.1.0",
+)
+
+app.include_router(repositories_router)
+app.include_router(chat_router)
 
 
 @app.get("/health")
-def health():
-    return {"status": "ok"}
+def health_check():
+    return {
+        "status": "ok",
+    }

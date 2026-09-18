@@ -15,13 +15,17 @@ client = QdrantClient(path="./qdrant_data")
 DEFAULT_COLLECTION = "code_chunks_lang"
 
 
+def collection_exists(collection_name: str) -> bool:
+    """Return whether a Qdrant collection has already been created."""
+    collections = client.get_collections().collections
+    return any(collection.name == collection_name for collection in collections)
+
+
 def create_collection(
     vector_size: int,
     collection_name: str = DEFAULT_COLLECTION,
 ):
-    collections = client.get_collections().collections
-
-    if collection_name not in [c.name for c in collections]:
+    if not collection_exists(collection_name):
         client.create_collection(
             collection_name=collection_name,
             vectors_config=VectorParams(
