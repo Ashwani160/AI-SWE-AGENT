@@ -1,8 +1,10 @@
 import requests
 
-
-API_BASE_URL = "http://127.0.0.1:8000"
-
+import os
+API_BASE_URL = os.getenv(
+    "REPORAG_API_URL",
+    "https://ashwani.viewdns.net",
+)
 
 def index_repository(
     repository_url: str,
